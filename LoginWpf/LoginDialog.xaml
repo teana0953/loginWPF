@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LoginWpf"
         mc:Ignorable="d"
-        Title="LoginDialog" Height="300" Width="300">
+        Title="LoginDialog" Height="400" Width="500" Loaded="Window_Loaded">
     <Grid>
-        <WebBrowser Name="loginBrowser"></WebBrowser>
+        <WebBrowser Name="loginBrowser" Navigated="loginBrowser_Navigated"></WebBrowser>
     </Grid>
 </Window>

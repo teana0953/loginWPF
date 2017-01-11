@@ -15,3 +15,5 @@ C:\Git\LoginWpf\LoginWpf\obj\Debug\LoginWpf.exe
 C:\Git\LoginWpf\LoginWpf\obj\Debug\LoginWpf.pdb
 C:\Git\LoginWpf\LoginWpf\obj\Debug\LoginDialog.g.cs
 C:\Git\LoginWpf\LoginWpf\obj\Debug\LoginDialog.baml
+C:\Git\LoginWpf\LoginWpf\bin\Debug\Facebook.dll
+C:\Git\LoginWpf\LoginWpf\bin\Debug\Facebook.xml
