@@ -1,1 +1,17 @@
 C:\Users\tina.liang\Documents\Visual Studio 2015\Projects\WPF\LoginWpf\LoginWpf\bin\Debug\LoginWpf.exe.config
+C:\Git\LoginWpf\LoginWpf\bin\Debug\LoginWpf.exe.config
+C:\Git\LoginWpf\LoginWpf\bin\Debug\LoginWpf.exe
+C:\Git\LoginWpf\LoginWpf\bin\Debug\LoginWpf.pdb
+C:\Git\LoginWpf\LoginWpf\obj\Debug\LoginWpf.csprojResolveAssemblyReference.cache
+C:\Git\LoginWpf\LoginWpf\obj\Debug\MainWindow.g.cs
+C:\Git\LoginWpf\LoginWpf\obj\Debug\App.g.cs
+C:\Git\LoginWpf\LoginWpf\obj\Debug\LoginWpf_MarkupCompile.cache
+C:\Git\LoginWpf\LoginWpf\obj\Debug\LoginWpf_MarkupCompile.lref
+C:\Git\LoginWpf\LoginWpf\obj\Debug\MainWindow.baml
+C:\Git\LoginWpf\LoginWpf\obj\Debug\LoginWpf.g.resources
+C:\Git\LoginWpf\LoginWpf\obj\Debug\LoginWpf.Properties.Resources.resources
+C:\Git\LoginWpf\LoginWpf\obj\Debug\LoginWpf.csproj.GenerateResource.Cache
+C:\Git\LoginWpf\LoginWpf\obj\Debug\LoginWpf.exe
+C:\Git\LoginWpf\LoginWpf\obj\Debug\LoginWpf.pdb
+C:\Git\LoginWpf\LoginWpf\obj\Debug\LoginDialog.g.cs
+C:\Git\LoginWpf\LoginWpf\obj\Debug\LoginDialog.baml

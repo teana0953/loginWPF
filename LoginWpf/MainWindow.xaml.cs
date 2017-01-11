@@ -24,5 +24,15 @@ namespace LoginWpf
         {
             InitializeComponent();
         }
+
+        private void btn_fbLogin_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btn_goolgeLogin_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

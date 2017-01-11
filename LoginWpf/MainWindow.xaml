@@ -7,6 +7,13 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        
+        <StackPanel Margin="50">
+            <Button Name="btn_fbLogin" Width="150" Click="btn_fbLogin_Click">
+                <Image Source="logInWithFB.png"/>
+            </Button>
+            <Button Name="btn_goolgeLogin" Width="150" Margin="5" Click="btn_goolgeLogin_Click">
+                <Image Source="btn_google_signin_dark_normal_web.png"></Image>
+            </Button>
+        </StackPanel>
     </Grid>
 </Window>
