@@ -18,6 +18,7 @@ namespace LoginWpf
 {
     public enum LogIn
     {
+        none,
         fb,
         google
     }

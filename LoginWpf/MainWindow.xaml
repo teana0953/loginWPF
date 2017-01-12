@@ -5,7 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LoginWpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="350" Width="525" Closed="Window_Closed">
+    <Window.Resources>
+        <local:StringToImageConverter x:Key="StringToImageConverter"></local:StringToImageConverter>
+    </Window.Resources>
     <Grid>
         <StackPanel Margin="50 0">
             <Button Name="btn_fbLogin" Width="150" Click="btn_fbLogin_Click" HorizontalAlignment="Right">
@@ -14,23 +17,24 @@
             <Button Name="btn_goolgeLogin" Width="150" Margin="0 5" Click="btn_goolgeLogin_Click" HorizontalAlignment="Right">
                 <Image Source="btn_google_signin_dark_normal_web.png"></Image>
             </Button>
-            <Image Name="profilePhoto" Width="50" Height="50"></Image>
+            <Image Name="profilePhoto" Width="50" Height="50" Source="{Binding ImagePath,Converter={StaticResource StringToImageConverter},IsAsync=True}"></Image>
             <StackPanel Orientation="Horizontal" Margin="5">
                 <Label>ID:</Label>
-                <TextBox Name="tb_Id" Margin="5 0" Width="150"></TextBox>
+                <TextBox Name="tb_Id" Margin="5 0" Width="150" Text="{Binding Id}"></TextBox>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="5">
                 <Label>Name:</Label>
-                <TextBox Name="tb_name" Margin="5 0" Width="150"></TextBox>
+                <TextBox Name="tb_name" Margin="5 0" Width="150" Text="{Binding Name}"></TextBox>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="5">
                 <Label>Gender:</Label>
-                <TextBox Name="tb_gender" Margin="5 0" Width="150"></TextBox>
+                <TextBox Name="tb_gender" Margin="5 0" Width="150" Text="{Binding Gender}"></TextBox>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="5">
                 <Label>DOB:</Label>
-                <TextBox Name="tb_dob" Margin="5 0" Width="150"></TextBox>
+                <TextBox Name="tb_dob" Margin="5 0" Width="150" Text="{Binding Dob}"></TextBox>
             </StackPanel>
+            <Button Name="btn_logout" HorizontalAlignment="Right" Margin="5" Click="btn_logout_Click">Log out</Button>
         </StackPanel>
     </Grid>
 </Window>

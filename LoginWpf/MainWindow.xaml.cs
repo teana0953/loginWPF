@@ -22,15 +22,33 @@ namespace LoginWpf
     /// </summary>
     public partial class MainWindow : Window
     {
-
+        public Patient patient;
+        public Setting setting;
+        private LogIn currentLoginWay;
         public MainWindow()
         {
             InitializeComponent();
+            patient = new Patient();
+            setting = Setting.LoadSettingConfig("setting.config")??new Setting();
+            DataContext = patient;
+            switch (setting.logInWay)
+            {
+                case LogIn.fb:
+                    GetProfileFromFb(setting.FbAccessToken);
+                    break;
+                case LogIn.google:
+                    break;
+            }
         }
 
         private void btn_fbLogin_Click(object sender, RoutedEventArgs e)
         {
-            LoginDialog logInDialog = new LoginDialog(LogIn.fb);
+            currentLoginWay = LogIn.fb;
+            // load previous accesstoken
+            if (!string.IsNullOrWhiteSpace(patient.Id))
+                return;
+
+            LoginDialog logInDialog = new LoginDialog(currentLoginWay);
             logInDialog.ShowDialog();
             // Take log in action
             if (logInDialog.FacebookOAuthResult == null)
@@ -46,30 +64,19 @@ namespace LoginWpf
                 // since our respone_type in FacebookLoginDialog was token,
                 // we got the access_token
                 // The user now has successfully granted permission to our app.
+                setting.FbAccessToken = logInDialog.FacebookOAuthResult.AccessToken;
                 GetProfileFromFb(logInDialog.FacebookOAuthResult.AccessToken);
             }
             else
             {
-                // for some reason we failed to get the access token.
-                // most likely the user clicked don't allow.
                 MessageBox.Show(logInDialog.FacebookOAuthResult.ErrorDescription);
             }
         }
-
-        private void btn_goolgeLogin_Click(object sender, RoutedEventArgs e)
-        {
-            LoginDialog logInDialog = new LoginDialog(LogIn.google);
-            logInDialog.ShowDialog();
-        }
-
-        private void GetProfileFromFb(string accessKey)
+        private async void GetProfileFromFb(string accessKey)
         {
             try
             {
                 var fb = new FacebookClient(accessKey);
-
-                // FacebookClient's Get/Post/Delete methods only supports JSON response results.
-                // For non json results, you will need to use different mechanism,
 
                 // load other profile info
                 fb.GetCompleted += (o, e) =>
@@ -83,61 +90,83 @@ namespace LoginWpf
                     }
                     else if (e.Error != null)
                     {
-                        // error occurred
-                        Application.Current.Dispatcher.Invoke(()=>
-                            { MessageBox.Show(e.Error.Message); }
-                        );
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            MessageBox.Show(e.Error.Message);
+                            setting.FbAccessToken = string.Empty;       // accesstoken init
+                        });
                     }
                     else
                     {
-                        // the request was completed successfully
-
-                        // now we can either cast it to IDictionary<string, object> or IList<object>
-                        // depending on the type.
-                        // For this example, we know that it is IDictionary<string,object>.
                         var result = (IDictionary<string, object>)e.GetResultData();
-
-                        var id = (string)result["id"];
-                        var name = (string)result["name"];
-                        var firstName = (string)result["first_name"];
-                        var lastName = (string)result["last_name"];
-                        var gender = (string)result["gender"];
-                        var dob = (string)result["birthday"];
-
-                        // since this is an async callback, make sure to be on the right thread
-                        // when working with the UI.
-                        Application.Current.Dispatcher.Invoke(() =>
-                        {
-                            tb_Id.Text = id;
-                            tb_name.Text = name;
-                            tb_gender.Text = gender;
-                            tb_dob.Text = dob;
-
-                            // load profilePhoto
-                            // available picture types: square (50x50), small (50xvariable height), large (about 200x variable height) (all size in pixels)
-                            // for more info visit http://developers.facebook.com/docs/reference/api
-                            string profilePictureUrl = string.Format("https://graph.facebook.com/{0}/picture?type={1}", id, "square");
-                            BitmapImage image = new BitmapImage();
-                            image.BeginInit();
-                            image.UriSource = new Uri(profilePictureUrl);
-                            image.EndInit();
-                            profilePhoto.Source = image;
-                        }); 
+                        patient.Id = (string)result["id"];
+                        patient.Name = (string)result["name"];
+                        patient.Gender = (string)result["gender"];
+                        patient.Dob = (string)result["birthday"];
+                        patient.ImagePath = string.Format("https://graph.facebook.com/{0}/picture?type={1}", patient.Id, "square");
+                        
                     }
                 };
 
-                // additional parameters can be passed and 
-                // must be assignable from IDictionary<string, object> or anonymous object
                 var parameters = new Dictionary<string, object>();
                 parameters["fields"] = "id,name,first_name,last_name,gender,birthday";
 
-                //fb.GetAsync("me", parameters);
-                fb.GetTaskAsync("me", parameters);
+                await fb.GetTaskAsync("me", parameters);    
             }
             catch (FacebookApiException ex)
             {
-                MessageBox.Show(ex.Message);
+                //MessageBox.Show(ex.Message);
             }
+        }
+        private void ClearProfile()
+        {
+            patient = new Patient();
+            DataContext = patient;
+        }
+        private void btn_goolgeLogin_Click(object sender, RoutedEventArgs e)
+        {
+            currentLoginWay = LogIn.google;
+            LoginDialog logInDialog = new LoginDialog(currentLoginWay);
+            logInDialog.ShowDialog();
+        }
+
+        private void btn_logout_Click(object sender, RoutedEventArgs e)
+        {
+            switch (currentLoginWay)
+            {
+                case LogIn.fb:
+                    logoutFb();
+                    break;
+                case LogIn.google:
+                    break;
+            }
+        }
+
+        private void logoutFb()
+        {
+            var fb = new FacebookClient();
+            var logoutUrl = fb.GetLogoutUrl(new
+            {
+                next = "https://www.facebook.com/connect/login_success.html",
+                access_token = setting.FbAccessToken
+            });
+            var webBrowser = new WebBrowser();
+            webBrowser.Navigated += (o, args) =>
+            {
+                if (args.Uri.AbsoluteUri == "https://www.facebook.com/connect/login_success.html")
+                {
+                    ClearProfile();
+                    setting.FbAccessToken = string.Empty;
+                }   
+                //Close();
+            };
+            webBrowser.Navigate(logoutUrl.AbsoluteUri);
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            setting.logInWay = currentLoginWay;
+            Setting.SaveSettingConfig("setting",setting);
         }
     }
 }
