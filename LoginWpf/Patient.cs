@@ -54,6 +54,17 @@ namespace LoginWpf
             }
         }
 
+        private string country;
+        public string Country
+        {
+            get { return country; }
+            set
+            {
+                country = value;
+                OnPropertyChanged("Country");
+            }
+        }
+
         private string imagePath;
         public string ImagePath
         {

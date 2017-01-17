@@ -18,3 +18,5 @@ C:\Git\LoginWpf\LoginWpf\obj\Debug\LoginDialog.baml
 C:\Git\LoginWpf\LoginWpf\bin\Debug\Facebook.dll
 C:\Git\LoginWpf\LoginWpf\bin\Debug\Facebook.xml
 C:\Git\LoginWpf\LoginWpf\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Git\LoginWpf\LoginWpf\bin\Debug\Newtonsoft.Json.dll
+C:\Git\LoginWpf\LoginWpf\bin\Debug\Newtonsoft.Json.xml
